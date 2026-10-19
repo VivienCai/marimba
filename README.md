@@ -10,7 +10,7 @@ Created by Vivien Cai and Tasha Lin with [p5.js](https://p5js.org/).
 The game is a static site. From the repository root, start a local server:
 
 ```sh
-python3 -m http.server 8000 --directory marimba_game
+python3 -m http.server 8000
 ```
 
 Then open <http://localhost:8000>.
