@@ -11,20 +11,20 @@ function mousePressed() {
     }
 }
 
-// Button Spawn Interaction 
+// Spawn button interaction
 function handleTopButtons() {
     if (isInsideButton(mouseX, mouseY, spawnCreatureButton)) {
         resetIcons();
         currentTool = "none";
 
-        let pos = randomPointInArena();
+        const pos = randomPointInArena();
         creatures.push(new Creature(pos.x, pos.y));
         spawnSfx.play();
         return true;
     } else if (isInsideButton(mouseX, mouseY, spawnPlantButton)) {
         resetIcons();
         currentTool = "none";
-        let pos = randomPointInArena();
+        const pos = randomPointInArena();
         plants.push(new Plant(pos.x, pos.y));
         spawnSfx.play();
         return true;
@@ -33,17 +33,15 @@ function handleTopButtons() {
 }
 
 function handleSideButtons() {
-    // Button Tool Interaction
+    // Tool button interaction
     if (isInsideButton(mouseX, mouseY, swordButton)) {
         resetIcons();
         if (currentTool === "sword") {
             currentTool = "none";
-            console.log("Sword button deselected");
         } else {
             swordButton.image = null;
             currentTool = "sword";
             swordSfx.play();
-            console.log("Sword button clicked");
         }
 
         return true;
@@ -51,12 +49,10 @@ function handleSideButtons() {
         resetIcons();
         if (currentTool === "food") {
             currentTool = "none";
-            console.log("Food button deselected");
         } else {
             foodButton.image = null;
             currentTool = "food";
             foodSfx.play();
-            console.log("Food button clicked");
         }
         return true;
 
@@ -64,12 +60,10 @@ function handleSideButtons() {
         resetIcons();
         if (currentTool === "water") {
             currentTool = "none";
-            console.log("Water button deselected");
         } else {
             waterButton.image = null;
             currentTool = "water";
             waterSfx.play();
-            console.log("Water button clicked");
         }
         return true;
     }
@@ -77,14 +71,11 @@ function handleSideButtons() {
 }
 
 function handleCreatureInteractions() {
-    // Creature Interaction
     if (currentTool === "food") {
         for (let creature of creatures) {
             if (creature.isClicked(mouseX, mouseY)) {
                 if (creature.isAlive) {
-                    console.log("Creature clicked");
                     creature.feed();
-                    // currentTool = "none";
                     break;
                 }
             }
@@ -95,9 +86,7 @@ function handleCreatureInteractions() {
         for (let creature of creatures) {
             if (creature.isClicked(mouseX, mouseY)) {
                 if (creature.isAlive && creature.stage === "adult") {
-                    console.log("Creature killed");
                     creature.die();
-                    // currentTool = "none";
                     break;
                 }
             }
@@ -108,13 +97,10 @@ function handleCreatureInteractions() {
 }
 
 function handlePlantInteractions() {
-    // Plant Interaction
     if (currentTool === "water") {
         for (let plant of plants) {
-            if (plant.isClicked(mouseX, mouseY)) {
-                console.log("Plant clicked");
+            if (plant.isAlive && plant.isClicked(mouseX, mouseY)) {
                 plant.water();
-                // currentTool = "none";
                 break;
             }
         }
@@ -130,11 +116,11 @@ function resetIcons() {
 }
 
 function detectPausedClick() {
-    let d = dist(mouseX, mouseY, 50, 50);
+    const d = dist(mouseX, mouseY, 50, 50);
     if (d < 25) {
         paused = !paused;
         spawnSfx.play();
-        if (!paused) {
+        if (paused) {
             bgmusic.pause();
         } else {
             bgmusic.play();

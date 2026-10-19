@@ -28,11 +28,6 @@ function drawButton(button) {
         }
 
     }
-    // else {
-    //     fill(0);
-    //     textAlign(CENTER, CENTER);
-    //     text(button.label, button.x + button.width / 2, button.y + button.height / 2);
-    // }
 }
 
 function isInsideButton(mx, my, button) {
@@ -42,8 +37,6 @@ function isInsideButton(mx, my, button) {
         my > button.y &&
         my < button.y + button.height
     ) {
-        // console.log(button.x, button.x + button.width, button.y, button.y + button.height);
-        // console.log(mx, my);
         return true;
     }
     return false;
@@ -64,16 +57,16 @@ function drawFoodCursor() {
     noCursor();
     push();
     imageMode(CENTER);
-    pop();
     image(foodIcon, mouseX, mouseY, foodButton.width, foodButton.height);
+    pop();
 }
 
 function drawWaterCursor() {
     noCursor();
     push();
     imageMode(CENTER);
-    pop();
     image(waterIcon, mouseX, mouseY, waterButton.width, waterButton.height);
+    pop();
 }
 
 function updateTopButtonSprites() {
@@ -95,7 +88,7 @@ function drawPauseButton() {
 
     rectMode(CENTER);
     noStroke();
-    fill(61, 204, 204)
+    fill(61, 204, 204);
     rect(30, 40, 20, 50);
     rect(60, 40, 20, 50);
 

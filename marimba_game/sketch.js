@@ -1,6 +1,6 @@
 // DM2008 Final Project
 // Vivien Cai & Tasha Lin
-// April 24, 2026 
+// April 24, 2026
 
 // CONFIG -----------------------------------------------------------------------
 const SCREEN_WIDTH = 1500;
@@ -33,6 +33,10 @@ let spawnPlantButton;
 let swordButton;
 let foodButton;
 let waterButton;
+let swordButtonEmpty;
+let foodButtonEmpty;
+let waterButtonEmpty;
+let lastFrame;
 
 // Assets
 let bgmusic, spawnSfx, waterSfx, swordSfx, foodSfx, creatureJumpSfx, plantGrowSfx, creatureGrowSfx, creatureDeathSfx;
@@ -53,11 +57,11 @@ let creatureAdultImages = [];
 let plantBabyImages = [];
 let plantAdultImages = [];
 let plantDeadImages = [];
-let deadCreatureImage = [];
+let cookedFoodImage;
 
 // ASSET LOADING ----------------------------------------------------------------
 function preload() {
-  soundFormats('mp3', 'wav');
+  soundFormats("mp3", "wav");
 
   bgmusic = loadSound("assets/audio/Bg_Music.mp3");
   spawnSfx = loadSound("assets/audio/UI_Spawn_Sound.wav");
@@ -80,37 +84,37 @@ function preload() {
   fg9 = loadImage("assets/background/9_FG_Field.png");
   fg10 = loadImage("assets/background/10_FG_trees.png");
 
-  swordIcon = loadImage('assets/ui/UI_sword.png');
-  swordIconEmpty = loadImage('assets/ui/UI_sword_outline.png');
-  foodIcon = loadImage('assets/ui/UI_food.png');
-  foodIconEmpty = loadImage('assets/ui/UI_food_outline.png');
-  waterIcon = loadImage('assets/ui/UI_water.png');
-  waterIconEmpty = loadImage('assets/ui/UI_water_outline.png');
+  swordIcon = loadImage("assets/ui/UI_sword.png");
+  swordIconEmpty = loadImage("assets/ui/UI_sword_outline.png");
+  foodIcon = loadImage("assets/ui/UI_food.png");
+  foodIconEmpty = loadImage("assets/ui/UI_food_outline.png");
+  waterIcon = loadImage("assets/ui/UI_water.png");
+  waterIconEmpty = loadImage("assets/ui/UI_water_outline.png");
 
-  spawnCreatureIcon = loadImage('assets/ui/UI_spawncreature.png');
-  spawnPlantIcon = loadImage('assets/ui/UI_spawnplant.png');
-  spawnCreaturePressedIcon = loadImage('assets/ui/UI_spawncreature_press.png');
-  spawnPlantPressedIcon = loadImage('assets/ui/UI_spawnplant_press.png');
+  spawnCreatureIcon = loadImage("assets/ui/UI_spawncreature.png");
+  spawnPlantIcon = loadImage("assets/ui/UI_spawnplant.png");
+  spawnCreaturePressedIcon = loadImage("assets/ui/UI_spawncreature_press.png");
+  spawnPlantPressedIcon = loadImage("assets/ui/UI_spawnplant_press.png");
 
-  creatureBabyImages[0] = loadImage('assets/creature_1_baby.png');
-  creatureAdultImages[0] = loadImage('assets/creature_1_adult.png');
-  creatureBabyImages[1] = loadImage('assets/creature_2_baby.png');
-  creatureAdultImages[1] = loadImage('assets/creature_2_adult.png');
-  creatureBabyImages[2] = loadImage('assets/creature_3_baby.png');
-  creatureAdultImages[2] = loadImage('assets/creature_3_adult.png');
+  creatureBabyImages[0] = loadImage("assets/creature_1_baby.png");
+  creatureAdultImages[0] = loadImage("assets/creature_1_adult.png");
+  creatureBabyImages[1] = loadImage("assets/creature_2_baby.png");
+  creatureAdultImages[1] = loadImage("assets/creature_2_adult.png");
+  creatureBabyImages[2] = loadImage("assets/creature_3_baby.png");
+  creatureAdultImages[2] = loadImage("assets/creature_3_adult.png");
 
-  plantBabyImages[0] = loadImage('assets/tree_1_seed.png');
-  plantAdultImages[0] = loadImage('assets/tree_1_grown.png');
-  plantBabyImages[1] = loadImage('assets/tree_2_seed.png');
-  plantAdultImages[1] = loadImage('assets/tree_2_grown.png');
-  plantBabyImages[2] = loadImage('assets/tree_3_seed.png');
-  plantAdultImages[2] = loadImage('assets/tree_3_grown.png');
+  plantBabyImages[0] = loadImage("assets/tree_1_seed.png");
+  plantAdultImages[0] = loadImage("assets/tree_1_grown.png");
+  plantBabyImages[1] = loadImage("assets/tree_2_seed.png");
+  plantAdultImages[1] = loadImage("assets/tree_2_grown.png");
+  plantBabyImages[2] = loadImage("assets/tree_3_seed.png");
+  plantAdultImages[2] = loadImage("assets/tree_3_grown.png");
 
-  plantDeadImages[0] = loadImage('assets/tree_1_dead.png');
-  plantDeadImages[1] = loadImage('assets/tree_2_dead.png');
-  plantDeadImages[2] = loadImage('assets/tree_3_dead.png');
+  plantDeadImages[0] = loadImage("assets/tree_1_dead.png");
+  plantDeadImages[1] = loadImage("assets/tree_2_dead.png");
+  plantDeadImages[2] = loadImage("assets/tree_3_dead.png");
 
-  deadCreatureImage = loadImage('assets/cooked_food_blue.png');
+  cookedFoodImage = loadImage("assets/cooked_food_blue.png");
 }
 
 
@@ -202,50 +206,42 @@ function setup() {
     x1: -500,
     x2: SCREEN_WIDTH * 2 - 500,
     speed: 0.1,
-  }
+  };
 
   mg4fog = {
     x1: 0,
     x2: SCREEN_WIDTH * 2,
     speed: 0.5,
-  }
+  };
 
   mg5clouds = {
     x1: - 300,
     x2: SCREEN_WIDTH * 2 - 300,
     speed: 0.2,
-  }
+  };
 
   fg7fog = {
     x1: 0,
     x2: SCREEN_WIDTH * 2,
     speed: 0.8,
-  }
+  };
 
   fg8clouds = {
     x1: -100,
     x2: SCREEN_WIDTH * 2 - 100,
     speed: 0.6,
-  }
-
-
-  console.log("Setup complete");
-
+  };
 }
 
 function draw() {
-  if (paused) {
+  if (paused && lastFrame) {
     image(lastFrame, 0, 0);
     fill(247, 255, 254, 100);
     rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-  }
-  else {
-
+  } else {
     background(240);
 
     drawBackground();
-    // fill(100, 100, 100, 100);
-    // ellipse(ARENA.x, ARENA.y, ARENA.w, ARENA.h);
     drawPlants();
     drawCreatures();
     drawLayer(fg10, 0.8); // foreground
@@ -265,16 +261,15 @@ function draw() {
     pop();
     lastFrame = get();
   }
-
 }
 
 // HELPERS ----------------------------------------------------------------------
 function isInsideArena(x, y) {
-  let dx = x - ARENA.x;
-  let dy = y - ARENA.y;
+  const dx = x - ARENA.x;
+  const dy = y - ARENA.y;
 
-  let rx = ARENA.w / 2;
-  let ry = ARENA.h / 2;
+  const rx = ARENA.w / 2;
+  const ry = ARENA.h / 2;
 
   return (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry) <= 1;
 }
@@ -291,25 +286,23 @@ function randomPointInArena() {
 }
 
 function constrainToArena(x, y, margin = 0) {
-  let dx = x - ARENA.x;
-  let dy = y - ARENA.y;
+  const dx = x - ARENA.x;
+  const dy = y - ARENA.y;
 
-  let rx = ARENA.w / 2 - margin;
-  let ry = ARENA.h / 2 - margin;
+  const rx = ARENA.w / 2 - margin;
+  const ry = ARENA.h / 2 - margin;
 
   if (rx <= 0 || ry <= 0) {
     return { x: ARENA.x, y: ARENA.y };
   }
 
-  let value = (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry);
+  const value = (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry);
 
-  // already inside
   if (value <= 1) {
     return { x, y };
   }
 
-  // project point back to ellipse edge
-  let scale = 1 / sqrt(value);
+  const scale = 1 / sqrt(value);
 
   return {
     x: ARENA.x + dx * scale,

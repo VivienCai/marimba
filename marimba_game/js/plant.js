@@ -4,8 +4,8 @@ class Plant {
         this.y = y;
         this.size = 75;
         this.adultSize = 120;
-        this.stage = "baby"; // can be "baby" or "adult"
-        this.type = int(random(3)); // 0, 1, or 2 for different plant types
+        this.stage = "baby";
+        this.type = int(random(3));
         this.overwatered = 0;
         this.isAlive = true;
         this.deathTimer = 0;
@@ -26,7 +26,6 @@ class Plant {
             img = plantDeadImages[this.type];
         }
 
-        // Shadow
         fill(0, 40);
         ellipse(this.x, this.y + (img.height / img.width) * this.size * 0.4, this.size * 0.8, this.size * 0.3);
         noStroke();
@@ -74,7 +73,7 @@ function drawPlants() {
         let plant = plants[i];
         plant.display();
 
-        // remove after 60 frames (~1 second)
+        // Remove after four seconds at the default 60 fps.
         if (!plant.isAlive && plant.deathTimer > 240) {
             plants.splice(i, 1);
         }

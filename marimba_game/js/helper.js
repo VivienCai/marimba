@@ -1,20 +1,13 @@
-// This file contains additional helper functions
-// DO NOT EDIT unless you need to
-
 document.addEventListener("DOMContentLoaded", init);
 
-// INITIALIZATION
 function init() {
-  // Only window receives resize events
   window.addEventListener("resize", viewportResized);
   setupCursorHideBehavior();
-  console.info("Helper functions initialized.");
 }
 
-// HIDE CURSOR
 function setupCursorHideBehavior() {
   let hideTimeout;
-  const hideDelay = 5_000; // ms of inactivity before hiding
+  const hideDelay = 5_000;
 
   function showCursor() {
     document.body.classList.remove("cursor-hidden");
@@ -30,20 +23,16 @@ function setupCursorHideBehavior() {
     hideTimeout = setTimeout(hideCursor, hideDelay);
   }
 
-  // Reset timer on any mouse movement or click
   window.addEventListener("mousemove", resetCursorTimer);
   window.addEventListener("mousedown", resetCursorTimer);
   window.addEventListener("keydown", resetCursorTimer);
 
-  // Kick things off
   resetCursorTimer();
 }
 
-// RESIZE HANDLING
 let _isFullscreenCanvas;
 
 function viewportResized() {
-  // Ensure p5 globals are available before doing anything
   if (
     typeof window.resizeCanvas !== "function" ||
     typeof window.windowWidth === "undefined" ||
@@ -52,7 +41,6 @@ function viewportResized() {
     return;
   }
 
-  // Decide if current canvas seems like it was made full-window?
   if (_isFullscreenCanvas === undefined) {
     _isFullscreenCanvas = width === windowWidth && height === windowHeight;
   }

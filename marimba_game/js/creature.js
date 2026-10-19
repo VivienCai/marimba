@@ -115,7 +115,7 @@ class Creature {
         if (!this.isAlive) {
             let alpha = map(this.deathTimer, 100, 240, 255, 0);
             tint(255, alpha);
-            img = deadCreatureImage;
+            img = cookedFoodImage;
         }
         else if (this.stage === "baby") {
             img = creatureBabyImages[this.type];
@@ -202,7 +202,7 @@ function drawCreatures() {
         let c = creatures[i];
         c.update();
 
-        // remove after 60 frames (~1 second)
+        // Remove after four seconds at the default 60 fps.
         if (!c.isAlive && c.deathTimer > 240) {
             creatures.splice(i, 1);
         }
