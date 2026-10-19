@@ -17,8 +17,8 @@ Then open <http://localhost:8000>.
 
 ## Controls
 
-- Use the top buttons to spawn a creature or plant.
-- Select food to feed and grow creatures.
-- Select water to grow plants. Too much water will kill them.
-- The sword can be used on adult creatures.
+- Use the top buttons to spawn a creature or plant
+- Select food to feed and grow creatures
+- Select water to grow plants. but be careful, too much water will kill them.
+- The sword can be used on adult creatures ONLY! dont kill the babies!
 - Use the pause button in the upper-left corner to pause or resume the game.
